@@ -1,5 +1,5 @@
 
-mport torch
+import torch
 import matplotlib.pyplot as plt
 from torchsummary import summary
 import yaml
