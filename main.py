@@ -16,7 +16,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
 
-from torch_lr_finder import LRFinder
+#from torch_lr_finder import LRFinder
 
 
 
