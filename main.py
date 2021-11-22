@@ -67,7 +67,7 @@ class FindImage:
         
         
         if lrmax is not None:
-            optimizer = optim.SGD(model.parameters(), lr=lrmin, momentum=0.90,weight_decay=self.l2_factor)
+            optimizer = optim.SGD(model.parameters(), lr=lrmin,weight_decay=self.l2_factor)
             if self.config['lr_scheduler'] == 'OneCycleLR': 
                 scheduler = OneCycleLR(optimizer=optimizer, max_lr=lrmax,
                                       epochs=epochs, steps_per_epoch=len(train_loader),
@@ -106,7 +106,7 @@ class FindImage:
         num_iterations = len(test_loader) * lr_epochs
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(model.parameters(), lr=start_lr, momentum=0.90, weight_decay=self.l2_factor)
+        optimizer = optim.SGD(model.parameters(), lr=start_lr, weight_decay=self.l2_factor)
         lr_finder = LRFinder(model, optimizer, criterion, device="cuda")
         lr_finder.range_test(train_loader, val_loader=test_loader, end_lr=end_lr, num_iter=num_iterations, step_mode="linear",diverge_th=50)
         
