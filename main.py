@@ -49,7 +49,7 @@ class FindImage:
         epochs=self.config['training_params']['epochs']
         
         l1_factor = self.config['training_params']['l1_factor']
-        max_epoch = self.config['lr_finder']['max_epoch']
+        #max_epoch = self.config['lr_finder']['max_epoch']
         
         criterion = nn.CrossEntropyLoss() if self.config['criterion'] == 'CrossEntropyLoss' else F.nll_loss()
         opt_func = optim.Adam if self.config['optimizer']['type'] == 'optim.Adam' else optim.SGD
