@@ -75,7 +75,7 @@ class FindImage:
             else:
                 scheduler = ReduceLROnPlateau(optimizer, factor=0.2, patience=3,verbose=True,mode='max')
         else:
-            optimizer = opt_func(model.parameters(), lr=lr, momentum=0.90,weight_decay=self.l2_factor)
+            optimizer = opt_func(model.parameters(), lr=lr,weight_decay=self.l2_factor)
             if self.config['lr_scheduler'] == 'OneCycleLR':
                 scheduler = OneCycleLR(optimizer, max_lr=lr,epochs=epochs,steps_per_epoch=len(train_loader))
             else:
