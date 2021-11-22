@@ -15,7 +15,9 @@ import numpy as np
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
+!pip install torch_lr_finder
 from torch_lr_finder import LRFinder
+
 
 
 class FindImage:
@@ -46,7 +48,7 @@ class FindImage:
         dropout=self.config['model_params']['dropout']
         epochs=self.config['training_params']['epochs']
         
-        l2_factor = self.config['training_params']['l2_factor']
+        l1_factor = self.config['training_params']['l1_factor']
         max_epoch = self.config['lr_finder']['max_epoch']
         
         criterion = nn.CrossEntropyLoss() if self.config['criterion'] == 'CrossEntropyLoss' else F.nll_loss()
