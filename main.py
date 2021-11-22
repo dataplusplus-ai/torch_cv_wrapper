@@ -46,7 +46,7 @@ class FindImage:
         dropout=self.config['model_params']['dropout']
         epochs=self.config['training_params']['epochs']
         
-        l1_factor = self.config['training_params']['l1_factor']
+        l2_factor = self.config['training_params']['l2_factor']
         max_epoch = self.config['lr_finder']['max_epoch']
         
         criterion = nn.CrossEntropyLoss() if self.config['criterion'] == 'CrossEntropyLoss' else F.nll_loss()
