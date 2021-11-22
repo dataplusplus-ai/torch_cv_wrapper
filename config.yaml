@@ -23,3 +23,4 @@ lr_scheduler: OneCycleLR
 training_params:
     epochs: 40
     l1_factor: 0
+    l2_factor: 0.0001
