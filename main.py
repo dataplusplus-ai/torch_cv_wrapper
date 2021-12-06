@@ -1,4 +1,3 @@
-
 import torchvision
 from torch_cv_wrapper.dataloader.load_data import *
 import torch
@@ -15,12 +14,10 @@ import numpy as np
 import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
-
 from torch_lr_finder import LRFinder
 
 
-
-class FindImage:
+class TriggerEngine:
     def __init__(self, config):
         self.config = config
         self.loader = config['data_loader']['type']
@@ -49,7 +46,7 @@ class FindImage:
         epochs=self.config['training_params']['epochs']
         
         l1_factor = self.config['training_params']['l1_factor']
-        #max_epoch = self.config['lr_finder']['max_epoch']
+        max_epoch = self.config['lr_finder']['max_epoch']
         
         criterion = nn.CrossEntropyLoss() if self.config['criterion'] == 'CrossEntropyLoss' else F.nll_loss()
         opt_func = optim.Adam if self.config['optimizer']['type'] == 'optim.Adam' else optim.SGD
@@ -67,7 +64,7 @@ class FindImage:
         
         
         if lrmax is not None:
-            optimizer = optim.SGD(model.parameters(), lr=lrmin,weight_decay=self.l2_factor)
+            optimizer = optim.SGD(model.parameters(), lr=lrmin, momentum=0.90,weight_decay=self.l2_factor)
             if self.config['lr_scheduler'] == 'OneCycleLR': 
                 scheduler = OneCycleLR(optimizer=optimizer, max_lr=lrmax,
                                       epochs=epochs, steps_per_epoch=len(train_loader),
@@ -75,7 +72,7 @@ class FindImage:
             else:
                 scheduler = ReduceLROnPlateau(optimizer, factor=0.2, patience=3,verbose=True,mode='max')
         else:
-            optimizer = opt_func(model.parameters(), lr=lr,weight_decay=self.l2_factor)
+            optimizer = opt_func(model.parameters(), lr=lr, momentum=0.90,weight_decay=self.l2_factor)
             if self.config['lr_scheduler'] == 'OneCycleLR':
                 scheduler = OneCycleLR(optimizer, max_lr=lr,epochs=epochs,steps_per_epoch=len(train_loader))
             else:
@@ -106,7 +103,7 @@ class FindImage:
         num_iterations = len(test_loader) * lr_epochs
 
         criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(model.parameters(), lr=start_lr, weight_decay=self.l2_factor)
+        optimizer = optim.SGD(model.parameters(), lr=start_lr, momentum=0.90, weight_decay=self.l2_factor)
         lr_finder = LRFinder(model, optimizer, criterion, device="cuda")
         lr_finder.range_test(train_loader, val_loader=test_loader, end_lr=end_lr, num_iter=num_iterations, step_mode="linear",diverge_th=50)
         
